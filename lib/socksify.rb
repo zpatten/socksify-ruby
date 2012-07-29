@@ -92,7 +92,7 @@ end
 
 class TCPSocket
   @@socks_version ||= "5"
-  
+
   def self.socks_version
     (@@socks_version == "4a" or @@socks_version == "4") ? "\004" : "\005"
   end
@@ -178,7 +178,7 @@ class TCPSocket
   def socks_authenticate
     if self.class.socks_username || self.class.socks_password
       Socksify::debug_debug "Sending username/password authentication"
-      write "\005\001\001\002"
+      write "\005\001\002"
     else
       Socksify::debug_debug "Sending no authentication"
       write "\005\001\000"
@@ -323,7 +323,7 @@ module Socksify
         s.write "\xF0\000\003" + [host.size].pack('C') + host
       end
       s.write [0].pack('n')  # Port
-      
+
       addr, port = s.socks_receive_reply
       Socksify::debug_notice "Resolved #{host} as #{addr} over SOCKS"
       addr
