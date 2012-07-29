@@ -219,8 +219,9 @@ class TCPSocket
     write [port].pack('n') if @@socks_version =~ /^4/
 
     #if @@socks_version == "4"
-    host = Resolv::DNS.new.getaddress(host).to_s
-    #end
+    if host !~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/
+      host = Resolv::DNS.new.getaddress(host).to_s
+    end
     Socksify::debug_debug host
     if host =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/  # to IPv4 address
       write "\001" if @@socks_version == "5"
